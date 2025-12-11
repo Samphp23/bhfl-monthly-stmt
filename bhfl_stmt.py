@@ -6,7 +6,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 from sqlalchemy import create_engine
 def get_mysql_secret(secret_name, region="ap-south-1"):
-    secret_name = "mangesh-mysql-secrets"
+    secret_name = "sag-mysql-secrets"
     session = boto3.session.Session()
     client = session.client(
         service_name='secretsmanager',
@@ -65,7 +65,7 @@ df["phone_no"] = df["phone_no"].apply(mask_phone)
 df["panid"] = df["panid"].apply(mask_pan)
 df.drop(columns=["status","txn_type"],inplace=True)
 s3 = boto3.client("s3")
-bucket = "samir-database-s3"
+bucket = "sagarika-database-s3"
 for cust_id, cust_df in df.groupby("customer_id"):
     table = pa.Table.from_pandas(cust_df)
     key = f"transactions/month={start_date.strftime('%Y-%m')}/cust_id={cust_id}/data.parquet"
